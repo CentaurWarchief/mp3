@@ -1,5 +1,6 @@
 package id3v2
 
+// http://id3.org/id3v2.3.0#Declared_ID3v2_frames
 var ID3v23TagList = ID3v2TagList{
 	"AENC": "AENC",
 	"APIC": "APIC",
