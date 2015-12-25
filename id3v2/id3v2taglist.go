@@ -1,6 +1,6 @@
 package id3v2
 
-type ID3v2TagList map[string]ID3v2Tag
+type ID3v2TagList map[string]string
 
 func (l ID3v2TagList) HasTag(tag string) bool {
 	if len(tag) != 4 {

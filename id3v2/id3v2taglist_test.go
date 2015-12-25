@@ -9,8 +9,8 @@ import (
 
 func TestHasTag(t *testing.T) {
 	v23 := ID3v2TagList{
-		"TRCK": ID3v2Tag("TRCK"),
-		"APIC": ID3v2Tag("APIC"),
+		"TRCK": "TRCK",
+		"APIC": "APIC",
 	}
 
 	assert.Len(t, v23, 2)
