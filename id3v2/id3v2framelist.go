@@ -12,6 +12,16 @@ func (l ID3v2FrameList) HasFrame(ID string) bool {
 	return false
 }
 
+func (l ID3v2FrameList) SingleFrame(ID string) (ID3v2Frame, error) {
+	for _, frame := range l {
+		if frame.ID() == ID {
+			return frame, nil
+		}
+	}
+
+	return nil, ErrFrameNotFound
+}
+
 func (l ID3v2FrameList) Frames(ID string) (frames []ID3v2Frame) {
 	for _, frame := range l {
 		if frame.ID() != ID {

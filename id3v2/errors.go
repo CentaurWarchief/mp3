@@ -7,4 +7,5 @@ var (
 	ErrID3HeaderNotFound   = errors.New("ID3 header not found")
 	ErrUnrecognizedVersion = errors.New("unrecognized version")
 	ErrUnsupportedVersion  = errors.New("unsupported version")
+	ErrFrameNotFound       = errors.New("frame not found")
 )

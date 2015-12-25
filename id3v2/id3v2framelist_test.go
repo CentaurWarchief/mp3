@@ -15,6 +15,24 @@ func (f SimpleFrame) ID() string {
 	return f.Tag
 }
 
+func TestSingleFrame(t *testing.T) {
+	l := id3v2.ID3v2FrameList{
+		SimpleFrame{Tag: "TRCK"},
+		SimpleFrame{Tag: "TYER"},
+		SimpleFrame{Tag: "TRCK"},
+	}
+
+	f, err := l.SingleFrame("TRCK")
+
+	assert.NotNil(t, f)
+	assert.Nil(t, err)
+
+	f, err = l.SingleFrame("TIT2")
+
+	assert.Nil(t, f)
+	assert.Equal(t, id3v2.ErrFrameNotFound, err)
+}
+
 func TestHasFrame(t *testing.T) {
 	l := id3v2.ID3v2FrameList{
 		SimpleFrame{Tag: "TYER"},
