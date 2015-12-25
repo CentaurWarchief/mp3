@@ -23,18 +23,21 @@ var (
 	}
 
 	bitrates = map[string][]int{
+		// MPEG 1.0
 		"11": []int{0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448},
 		"12": []int{0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384},
 		"13": []int{0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320},
+
+		// MPEG 2.0
 		"21": []int{0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256},
 		"22": []int{0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160},
 		"23": []int{0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160},
 	}
 
 	rates = map[string][]int{
-		"1":   []int{44100, 48000, 32000},
-		"2":   []int{22050, 24000, 16000},
-		"2.5": []int{11025, 12000, 8000},
+		"1":   []int{44100, 48000, 32000, 50000},
+		"2":   []int{22050, 24000, 16000, 50000},
+		"2.5": []int{11025, 12000, 8000, 50000},
 	}
 
 	samples = map[string]map[string]int{
@@ -51,13 +54,24 @@ var (
 	}
 )
 
+var ModeList = []string{
+	"Stereo",
+	"Joint Stereo",
+	"Dual Channel",
+	"Mono",
+}
+
 type Frame struct {
-	Version    string
-	Layer      string
-	Samples    int
-	Bitrate    int
-	SampleRate int
-	Size       int
+	Version       string
+	Layer         string
+	Frequency     int
+	Samples       int
+	Bitrate       int
+	SampleRate    int
+	Size          int
+	Mode          int
+	ModeExtension int
+	ModeText      string
 }
 
 func round(f float64) int {
@@ -90,6 +104,12 @@ func frame(b []byte) *Frame {
 
 	rate := rates[version][((b[2] & 0x0C) >> 2)]
 
+	mode := int((b[3] & 0x0C) >> 6)
+
+	frame.Frequency = int((b[2] >> 2) & 0x3)
+	frame.Mode = mode
+	frame.ModeExtension = int((b[3] & 0x30) >> 4)
+	frame.ModeText = ModeList[mode]
 	frame.SampleRate = rate
 	frame.Bitrate = bitrate
 	frame.Size = computeFrameSize(layer, bitrate, rate, int(((b[2] & 0x02) >> 1)))
@@ -146,7 +166,7 @@ func Duration(r io.ReadSeeker) int {
 	for {
 		block := make([]byte, 10)
 
-		if _, err := r.Read(block); err != nil || block[0] == 0 {
+		if n, err := r.Read(block); err != nil || n == 0 {
 			break
 		}
 
@@ -168,9 +188,11 @@ func Duration(r io.ReadSeeker) int {
 			if _, err := r.Seek(int64((128 - 10)), os.SEEK_CUR); err != nil {
 				return 0
 			}
+
+			continue
 		}
 
-		if _, err := r.Seek(int64(-9), os.SEEK_CUR); err != nil {
+		if _, err := r.Seek(-int64(9), os.SEEK_CUR); err != nil {
 			break
 		}
 	}
