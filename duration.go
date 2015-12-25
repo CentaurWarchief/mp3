@@ -171,6 +171,10 @@ func Duration(r io.ReadSeeker) int {
 			break
 		}
 
+		if block[0] == 0 || block[0] == 32 {
+			break
+		}
+
 		if block[0] == '\xFF' && ((block[1] & 0xE0) != 0) {
 			frame := frame(block[0:4])
 
