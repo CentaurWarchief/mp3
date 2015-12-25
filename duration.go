@@ -129,6 +129,7 @@ func Duration(r io.ReadSeeker) int {
 	var duration float64
 
 	r.Seek(0, os.SEEK_SET)
+	defer r.Seek(0, os.SEEK_SET)
 
 	block := make([]byte, 100)
 
