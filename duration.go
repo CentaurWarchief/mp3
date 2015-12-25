@@ -52,16 +52,16 @@ var (
 			"3": 576,
 		},
 	}
+
+	modes = []string{
+		"Stereo",
+		"Joint Stereo",
+		"Dual Channel",
+		"Mono",
+	}
 )
 
-var ModeList = []string{
-	"Stereo",
-	"Joint Stereo",
-	"Dual Channel",
-	"Mono",
-}
-
-type Frame struct {
+type frame struct {
 	Version       string
 	Layer         string
 	Frequency     int
@@ -78,8 +78,8 @@ func round(f float64) int {
 	return int(math.Floor(f + .5))
 }
 
-func frame(b []byte) *Frame {
-	frame := &Frame{}
+func parseFrame(b []byte) *frame {
+	frame := &frame{}
 
 	version := versions[((b[1] & 0x18) >> 3)]
 	layer := layers[((b[1] & 0x06) >> 1)]
@@ -109,7 +109,7 @@ func frame(b []byte) *Frame {
 	frame.Frequency = int((b[2] >> 2) & 0x3)
 	frame.Mode = mode
 	frame.ModeExtension = int((b[3] & 0x30) >> 4)
-	frame.ModeText = ModeList[mode]
+	frame.ModeText = modes[mode]
 	frame.SampleRate = rate
 	frame.Bitrate = bitrate
 	frame.Size = computeFrameSize(layer, bitrate, rate, int(((b[2] & 0x02) >> 1)))
@@ -176,7 +176,7 @@ func Duration(r io.ReadSeeker) int {
 		}
 
 		if block[0] == '\xFF' && ((block[1] & 0xE0) != 0) {
-			frame := frame(block[0:4])
+			frame := parseFrame(block[0:4])
 
 			if frame.Size == 0 {
 				return round(duration)
