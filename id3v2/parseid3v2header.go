@@ -13,6 +13,17 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 		return nil, ErrID3HeaderNotFound
 	}
 
+	major := int(block[3])
+
+	switch major {
+	case 2:
+	case 3:
+	case 4:
+		break
+	default:
+		return nil, ErrUnrecognizedVersion
+	}
+
 	size := uint64(0)
 
 	// https://en.wikipedia.org/wiki/Synchsafe
@@ -26,7 +37,7 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 	}
 
 	return &Header{
-		MajorVersion:      int(block[3]),
+		MajorVersion:      major,
 		MinorVersion:      int(block[4]),
 		Unsynchronization: (block[5] & 0x80) != 0,
 		Extended:          (block[5] & 0x40) != 0,

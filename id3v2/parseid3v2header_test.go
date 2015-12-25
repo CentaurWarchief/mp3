@@ -32,6 +32,15 @@ func TestParseNonID3Header(t *testing.T) {
 	assert.Equal(t, id3v2.ErrID3HeaderNotFound, err)
 }
 
+func TestParseUnrecognizedID3MajorVersion(t *testing.T) {
+	reader := bytes.NewReader([]byte{73, 68, 51, 5, 0, 0, 0, 6, 96, 117})
+
+	header, err := id3v2.ParseID3v2Header(reader)
+
+	assert.Nil(t, header)
+	assert.Equal(t, id3v2.ErrUnrecognizedVersion, err)
+}
+
 func TestParseID3v2Header(t *testing.T) {
 	reader := bytes.NewReader([]byte{
 		73, 68, 51, 3, 0,
