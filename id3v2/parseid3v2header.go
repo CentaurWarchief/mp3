@@ -26,10 +26,10 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 	return &Header{
 		MajorVersion:      int(block[3]),
 		MinorVersion:      int(block[4]),
-		Unsynchronization: (block[5] & 1 << 7) != 0,
-		Extended:          (block[5] & 1 << 6) != 0,
-		Experimental:      (block[5] & 1 << 5) != 0,
-		Footer:            (block[5] & 1 << 4) != 0,
+		Unsynchronization: (block[5] & 0x80) != 0,
+		Extended:          (block[5] & 0x40) != 0,
+		Experimental:      (block[5] & 0x20) != 0,
+		Footer:            (block[5] & 0x10) != 0,
 		Size:              size,
 	}, nil
 }
