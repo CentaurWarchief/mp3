@@ -15,6 +15,8 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 
 	size := uint64(0)
 
+	// https://en.wikipedia.org/wiki/Synchsafe
+	// http://stackoverflow.com/a/5652842
 	for _, b := range block[6:] {
 		if (b & (1 << 7)) != 0 {
 			return nil, ErrInvalidSize

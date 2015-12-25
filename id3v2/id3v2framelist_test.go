@@ -7,11 +7,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type SimpleFrame struct {
+	Tag string
+}
+
+func (f SimpleFrame) ID() string {
+	return f.Tag
+}
+
 func TestHasFrame(t *testing.T) {
 	l := id3v2.ID3v2FrameList{
-		id3v2.ID3v2Frame{ID: "TYER"},
-		id3v2.ID3v2Frame{ID: "TYER"},
-		id3v2.ID3v2Frame{ID: "TYER"},
+		SimpleFrame{Tag: "TYER"},
+		SimpleFrame{Tag: "TYER"},
+		SimpleFrame{Tag: "TYER"},
 	}
 
 	assert.True(t, l.HasFrame("TYER"))
@@ -20,9 +28,9 @@ func TestHasFrame(t *testing.T) {
 
 func TestGetFrames(t *testing.T) {
 	l := id3v2.ID3v2FrameList{
-		id3v2.ID3v2Frame{ID: "TRCK"},
-		id3v2.ID3v2Frame{ID: "TRCK"},
-		id3v2.ID3v2Frame{ID: "TRCK"},
+		SimpleFrame{Tag: "TRCK"},
+		SimpleFrame{Tag: "TRCK"},
+		SimpleFrame{Tag: "TRCK"},
 	}
 
 	assert.Len(t, l.Frames("APIC"), 0)
