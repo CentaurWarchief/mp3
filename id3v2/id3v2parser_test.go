@@ -10,9 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func countOfRegisteredCaptures(
-	parser *id3v2.ID3v2Parser,
-) int {
+func countOfRegisteredCaptures(parser *id3v2.ID3v2Parser) int {
 	return reflect.Indirect(reflect.ValueOf(*parser)).FieldByName("byVersion").Len()
 }
 
