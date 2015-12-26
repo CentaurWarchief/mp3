@@ -5,6 +5,10 @@ import (
 	"io/ioutil"
 )
 
+const (
+	ID3v24FrameHeaderSize = 10
+)
+
 func ID3v24FrameCapturer(r io.Reader) (frames ID3v2FrameList) {
 	position := ID3v24FrameHeaderSize
 
