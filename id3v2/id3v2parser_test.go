@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/CentaurWarchief/mp3/id3v2"
+	"github.com/CentaurWarchief/mp3/id3v2/frame"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,7 +25,7 @@ func TestAddVersionedFrameCapturer(t *testing.T) {
 
 	assert.Equal(t, 0, countOfRegisteredCaptures(parser))
 
-	parser.AddVersionedFrameCapturer(3, func(r io.Reader) id3v2.ID3v2FrameList {
+	parser.AddVersionedFrameCapturer(3, func(r io.Reader) []frame.ID3v2CapturedFrame {
 		return nil
 	})
 

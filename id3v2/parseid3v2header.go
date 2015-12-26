@@ -2,6 +2,7 @@ package id3v2
 
 import "io"
 
+// Parses the ID3v2 header
 func ParseID3v2Header(r io.Reader) (*ID3v2Header, error) {
 	block := make([]byte, 10)
 

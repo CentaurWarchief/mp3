@@ -1,15 +1,17 @@
-package id3v2
+package capture
 
 import (
 	"io"
 	"io/ioutil"
+
+	. "github.com/CentaurWarchief/mp3/id3v2/frame"
 )
 
 const (
 	ID3v23FrameHeaderSize = 10
 )
 
-func ID3v23FrameCapturer(r io.Reader) (frames ID3v2FrameList) {
+func ID3v23FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
 	position := ID3v23FrameHeaderSize
 
 	for {
@@ -26,17 +28,14 @@ func ID3v23FrameCapturer(r io.Reader) (frames ID3v2FrameList) {
 
 		io.CopyN(ioutil.Discard, r, int64(size))
 
-		tag := string(frame[:4])
-
-		if !ID3v23TagList.HasTag(tag) {
+		if !IsValidFrameName(frame[:4]) {
 			continue
 		}
 
-		frames = append(frames, ID3v2FrameSizePosition{
-			Tag:          tag,
-			Size:         size,
-			Position:     position,
-			BodyPosition: ID3v23FrameHeaderSize + position,
+		frames = append(frames, ID3v2CapturedFrame{
+			Frame:    string(frame[:4]),
+			Size:     size,
+			Position: ID3v23FrameHeaderSize + position,
 		})
 
 		position += (ID3v23FrameHeaderSize + int(size))
