@@ -25,10 +25,10 @@ func ID3v22FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
 		size |= (int(frame[4]) << 0x08)
 		size |= (int(frame[5]))
 
-		io.CopyN(ioutil.Discard, r, int64(4))
 		io.CopyN(ioutil.Discard, r, int64(size))
 
 		if !IsValidFrameName(frame[:3]) {
+			position += ID3v22FrameHeaderSize + size
 			continue
 		}
 
@@ -38,7 +38,7 @@ func ID3v22FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
 			Position: (ID3v22FrameHeaderSize - 4) + position,
 		})
 
-		position += (ID3v22FrameHeaderSize + size)
+		position += ID3v22FrameHeaderSize + size
 	}
 
 	return frames
