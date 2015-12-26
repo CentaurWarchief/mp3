@@ -1,6 +1,6 @@
 package id3v2
 
-type Header struct {
+type ID3v2Header struct {
 	MajorVersion      int
 	MinorVersion      int
 	Unsynchronization bool

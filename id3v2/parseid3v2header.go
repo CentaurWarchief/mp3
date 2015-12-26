@@ -2,7 +2,7 @@ package id3v2
 
 import "io"
 
-func ParseID3v2Header(r io.Reader) (*Header, error) {
+func ParseID3v2Header(r io.Reader) (*ID3v2Header, error) {
 	block := make([]byte, 10)
 
 	if _, err := r.Read(block); err != nil {
@@ -10,7 +10,7 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 	}
 
 	if string(block[:3]) != "ID3" {
-		return nil, ErrID3HeaderNotFound
+		return nil, ErrHeaderNotFound
 	}
 
 	major := int(block[3])
@@ -36,7 +36,7 @@ func ParseID3v2Header(r io.Reader) (*Header, error) {
 		size |= ((size << 7) | uint64(b))
 	}
 
-	return &Header{
+	return &ID3v2Header{
 		MajorVersion:      major,
 		MinorVersion:      int(block[4]),
 		Unsynchronization: (block[5] & 0x80) != 0,

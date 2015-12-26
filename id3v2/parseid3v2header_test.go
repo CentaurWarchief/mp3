@@ -29,7 +29,7 @@ func TestParseNonID3Header(t *testing.T) {
 	header, err := id3v2.ParseID3v2Header(reader)
 
 	assert.Nil(t, header)
-	assert.Equal(t, id3v2.ErrID3HeaderNotFound, err)
+	assert.Equal(t, id3v2.ErrHeaderNotFound, err)
 }
 
 func TestParseUnrecognizedID3MajorVersion(t *testing.T) {
