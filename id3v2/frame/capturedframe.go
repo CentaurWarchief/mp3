@@ -2,8 +2,8 @@ package frame
 
 import "io"
 
-// CapturedFrame represents a captured frame at the
-// specified position with its size
+// CapturedFrame represents a captured frame at
+// the specified position with its size
 type CapturedFrame struct {
 	Frame    string
 	Size     uint64
@@ -15,8 +15,7 @@ func (f CapturedFrame) ID() string {
 	return f.Frame
 }
 
-// AsReadable turns this captured frame into a
-// readable frame (ReadableFrame)
+// AsReadable turns this frame into a readable frame (ReadableFrame)
 func (f CapturedFrame) AsReadable(r io.ReaderAt, u func(body []byte) interface{}) ReadableFrame {
 	return NewReadableFrame(f.Frame, func() interface{} {
 		body := make([]byte, f.Size)
