@@ -1,7 +1,6 @@
 package id3v2
 
-// Header represents a valid ID3v2 header with all
-// its standardized information
+// Header represents a valid ID3v2 header
 type Header struct {
 	MajorVersion      int
 	MinorVersion      int

@@ -6,6 +6,5 @@ import (
 	"github.com/CentaurWarchief/mp3/id3v2/frame"
 )
 
-// FrameCapturer captures all ID3v2 frames from the given reader
-// until it reach its EOF
+// FrameCapturer captures all ID3v2 frames from the given reader until reach its EOF
 type FrameCapturer func(r io.Reader) []frame.CapturedFrame
