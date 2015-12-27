@@ -10,6 +10,12 @@ A simple library to extract metadata ([ID3v1][ID3v1] & [ID3v2][ID3v2]) from [MP3
 go get github.com/CentaurWarchief/mp3
 ```
 
+### Features
+- It supports all known ID3v2 versions: 2.2, 2.3 and 2.4;
+- It only allocates memory for frames that you `Read()`;
+- It's entirely based upon native `io.Reader`.
+
+
 ##### References
 - http://www.codeproject.com/Articles/8295/MPEG-Audio-Frame-Header
 - https://en.wikipedia.org/wiki/ID3#Layout
