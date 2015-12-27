@@ -17,19 +17,19 @@ func (u AttachedPictureFrameUnpacker) CanUnpack(frame frame.Frame) bool {
 	return frame.ID() == "PIC" || frame.ID() == "APIC"
 }
 
-// Unpack unpacks the given attached picture frame
+// Unpack unpacks the given attached picture frame into a ImageFrame
 func (u AttachedPictureFrameUnpacker) Unpack(f frame.Frame, b []byte) interface{} {
 	// http://id3.org/id3v2.3.0#Attached_picture
 	n0 := 0
-	n1 := 1 + bytes.IndexByte(b[(1+n0):], 0x00)
-	n2 := 2 + bytes.IndexByte(b[(3+n1):], 0x00)
+	n1 := 1 + bytes.IndexByte(b[(1+n0):], 0x0)
+	n2 := 2 + bytes.IndexByte(b[(3+n1):], 0x0)
 
 	// TODO: handle description encoding properly
 	return frame.ImageFrame{
 		Encoding:    b[n0],
 		MIMEType:    string(b[1:n1]),
 		Type:        b[(n1 + 2)],
-		Description: string(b[(2 + n1):(n1 + n2 + 1)]),
+		Description: string(b[(n1 + 2):(n1 + n2 + 1)]),
 		Binary:      b[(n1 + n2 + 2):],
 	}
 }
