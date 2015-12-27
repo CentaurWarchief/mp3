@@ -8,14 +8,14 @@ import (
 )
 
 const (
-	ID3v22FrameHeaderSize = 10
+	ID3v22FrameHeaderSize = 6
 )
 
 func ID3v22FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
-	position := ID3v22FrameHeaderSize
+	position := 4 + ID3v22FrameHeaderSize
 
 	for {
-		frame := make([]byte, 6)
+		frame := make([]byte, ID3v22FrameHeaderSize)
 
 		if _, err := r.Read(frame); err != nil {
 			break
@@ -35,11 +35,12 @@ func ID3v22FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
 		frames = append(frames, ID3v2CapturedFrame{
 			Frame:    string(frame[:3]),
 			Size:     uint64(size),
-			Position: (ID3v22FrameHeaderSize - 4) + position,
+			Position: ID3v22FrameHeaderSize + position,
 		})
 
 		position += ID3v22FrameHeaderSize + size
 	}
 
 	return frames
+
 }

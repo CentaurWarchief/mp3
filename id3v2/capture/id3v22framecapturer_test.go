@@ -39,7 +39,7 @@ func TestCaptureID3v22Frames(t *testing.T) {
 	assert.Equal(t, uint64(0), frames[3].Size)
 
 	assert.Equal(t, 16, frames[0].Position)
-	assert.Equal(t, 26, frames[1].Position)
-	assert.Equal(t, 36, frames[2].Position)
-	assert.Equal(t, 56, frames[3].Position)
+	assert.Equal(t, 22, frames[1].Position)
+	assert.Equal(t, 28, frames[2].Position)
+	assert.Equal(t, 40, frames[3].Position)
 }
