@@ -4,42 +4,40 @@ import (
 	"io"
 	"io/ioutil"
 
-	. "github.com/CentaurWarchief/mp3/id3v2/frame"
+	"github.com/CentaurWarchief/mp3/id3v2/frame"
 )
 
-const (
-	ID3v23FrameHeaderSize = 10
-)
-
-func ID3v23FrameCapturer(r io.Reader) (frames []ID3v2CapturedFrame) {
-	position := ID3v23FrameHeaderSize
+// ID3v23FrameCapturer captures all v2.3 frames from the given
+// reader until reach its EOF
+func ID3v23FrameCapturer(r io.Reader) (frames []frame.ID3v2CapturedFrame) {
+	position := 10
 
 	for {
-		frame := make([]byte, ID3v23FrameHeaderSize)
+		block := make([]byte, 10)
 
-		if _, err := r.Read(frame); err != nil {
+		if _, err := r.Read(block); err != nil {
 			break
 		}
 
-		size := (uint64(frame[4]) << 0x18)
-		size |= (uint64(frame[5]) << 0x10)
-		size |= (uint64(frame[6]) << 0x08)
-		size |= (uint64(frame[7]))
+		size := (uint64(block[4]) << 0x18)
+		size |= (uint64(block[5]) << 0x10)
+		size |= (uint64(block[6]) << 0x08)
+		size |= (uint64(block[7]))
 
 		io.CopyN(ioutil.Discard, r, int64(size))
 
-		if !IsValidFrameName(frame[:4]) {
-			position += ID3v23FrameHeaderSize + int(size)
+		if !frame.IsValidFrameName(block[:4]) {
+			position += 10 + int(size)
 			continue
 		}
 
-		frames = append(frames, ID3v2CapturedFrame{
-			Frame:    string(frame[:4]),
+		frames = append(frames, frame.ID3v2CapturedFrame{
+			Frame:    string(block[:4]),
 			Size:     size,
-			Position: ID3v23FrameHeaderSize + position,
+			Position: 10 + position,
 		})
 
-		position += ID3v23FrameHeaderSize + int(size)
+		position += 10 + int(size)
 	}
 
 	return frames
