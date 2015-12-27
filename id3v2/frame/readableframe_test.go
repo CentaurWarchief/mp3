@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewID3v2ReadableFrame(t *testing.T) {
-	frame := frame.NewID3v2ReadableFrame("TRCK", func() interface{} {
+func TestNewReadableFrame(t *testing.T) {
+	frame := frame.NewReadableFrame("TRCK", func() interface{} {
 		return nil
 	})
 

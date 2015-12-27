@@ -2,8 +2,8 @@ package id3v2
 
 import "io"
 
-// Parses the ID3v2 header
-func ParseID3v2Header(r io.Reader) (*ID3v2Header, error) {
+// ParseHeader parses the standard ID3v2 header
+func ParseHeader(r io.Reader) (*Header, error) {
 	block := make([]byte, 10)
 
 	if _, err := r.Read(block); err != nil {
@@ -37,7 +37,7 @@ func ParseID3v2Header(r io.Reader) (*ID3v2Header, error) {
 		size |= ((size << 7) | uint64(b))
 	}
 
-	return &ID3v2Header{
+	return &Header{
 		MajorVersion:      major,
 		MinorVersion:      int(block[4]),
 		Unsynchronization: (block[5] & 0x80) != 0,

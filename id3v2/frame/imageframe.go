@@ -1,6 +1,6 @@
 package frame
 
-type ID3v2ImageFrame struct {
+type ImageFrame struct {
 	Binary      []byte
 	MIMEType    string
 	Description string

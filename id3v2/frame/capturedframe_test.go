@@ -7,10 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestID3v2CapturedFrameID(t *testing.T) {
-	frame := frame.ID3v2CapturedFrame{
-		Frame: "TIT2",
-	}
+func TestCapturedFrameID(t *testing.T) {
+	frame := frame.CapturedFrame{Frame: "TIT2"}
 
 	assert.Equal(t, "TIT2", frame.ID())
 }

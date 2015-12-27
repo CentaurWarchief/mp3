@@ -9,8 +9,7 @@ import (
 )
 
 func TestCaptureID3v23FramesEOF(t *testing.T) {
-	reader := bytes.NewReader([]byte{})
-	frames := capture.ID3v23FrameCapturer(reader)
+	frames := capture.ID3v23FrameCapturer(bytes.NewReader([]byte{}))
 
 	assert.Len(t, frames, 0)
 }

@@ -2,7 +2,8 @@ package util
 
 import "golang.org/x/text/encoding"
 
-// Decodes UTF16 using decoder provided by the given `encoding`
+// DecodeUTF16 decodes UTF-16 using the decoder provided
+// by the given `encoding`
 func DecodeUTF16(data []byte, encoding encoding.Encoding) string {
 	decoded := make([]byte, 2*len(data))
 

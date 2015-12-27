@@ -9,7 +9,7 @@ import (
 
 // ID3v24FrameCapturer captures all v2.4 frames from the given
 // reader until reach its EOF
-func ID3v24FrameCapturer(r io.Reader) (frames []frame.ID3v2CapturedFrame) {
+func ID3v24FrameCapturer(r io.Reader) (frames []frame.CapturedFrame) {
 	position := 10
 
 	for {
@@ -32,7 +32,7 @@ func ID3v24FrameCapturer(r io.Reader) (frames []frame.ID3v2CapturedFrame) {
 			continue
 		}
 
-		frames = append(frames, frame.ID3v2CapturedFrame{
+		frames = append(frames, frame.CapturedFrame{
 			Frame:    string(block[:4]),
 			Size:     uint64(size),
 			Position: 10 + position,

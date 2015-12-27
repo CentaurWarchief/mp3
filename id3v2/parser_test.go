@@ -10,20 +10,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func countOfRegisteredCaptures(parser *id3v2.ID3v2Parser) int {
+func countOfRegisteredCaptures(parser *id3v2.Parser) int {
 	return reflect.Indirect(reflect.ValueOf(*parser)).FieldByName("byVersion").Len()
 }
 
-func TestNewID3v2Parser(t *testing.T) {
-	assert.Equal(t, 3, countOfRegisteredCaptures(id3v2.NewID3v2Parser()))
+func TestNewParser(t *testing.T) {
+	assert.Equal(t, 3, countOfRegisteredCaptures(id3v2.NewParser()))
 }
 
 func TestAddVersionedFrameCapturer(t *testing.T) {
-	parser := id3v2.NewEmptyID3v2Parser()
+	parser := id3v2.NewEmptyParser()
 
 	assert.Equal(t, 0, countOfRegisteredCaptures(parser))
 
-	parser.AddVersionedFrameCapturer(3, func(r io.Reader) []frame.ID3v2CapturedFrame {
+	parser.AddVersionedFrameCapturer(3, func(r io.Reader) []frame.CapturedFrame {
 		return nil
 	})
 

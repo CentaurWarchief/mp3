@@ -1,6 +1,8 @@
 package id3v2
 
-type ID3v2Header struct {
+// Header represents a valid ID3v2 header with all
+// its standardized information
+type Header struct {
 	MajorVersion      int
 	MinorVersion      int
 	Unsynchronization bool

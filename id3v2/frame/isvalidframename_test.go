@@ -16,7 +16,7 @@ func TestIsValidFrameName(t *testing.T) {
 	assert.True(t, frame.IsValidFrameName([]byte("TPE3")))
 	assert.True(t, frame.IsValidFrameName([]byte("TPE4")))
 	assert.True(t, frame.IsValidFrameName([]byte("TRCK")))
-	assert.False(t, frame.IsValidFrameName([]byte("#")))
+	assert.False(t, frame.IsValidFrameName([]byte("?")))
 	assert.False(t, frame.IsValidFrameName([]byte("")))
 	assert.False(t, frame.IsValidFrameName([]byte("TPE5")))
 	assert.False(t, frame.IsValidFrameName([]byte("TPE6")))
