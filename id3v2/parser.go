@@ -8,7 +8,7 @@ import (
 	"github.com/CentaurWarchief/mp3/id3v2/unpack"
 )
 
-// NewEmptyParser creates an empty ID3v2Parser without adding any frame capturer
+// NewEmptyParser creates an empty Parser without adding any frame capturer
 // or unpacker. You must add your own capture strategy(ies) and unpack(ers)
 func NewEmptyParser() *Parser {
 	return &Parser{
