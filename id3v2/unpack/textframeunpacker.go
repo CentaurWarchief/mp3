@@ -45,23 +45,17 @@ func (u TextFrameUnpacker) Unpack(f frame.Frame, b []byte) interface{} {
 	}
 
 	if b[0] == UTF16 {
-		return frame.NewTextFrame(
-			f.ID(),
-			util.DecodeUTF16(
-				b[1:],
-				unicode.UTF16(unicode.BigEndian, unicode.ExpectBOM),
-			),
-		)
+		return frame.NewTextFrame(f.ID(), util.DecodeUTF16(
+			b[1:],
+			unicode.UTF16(unicode.BigEndian, unicode.ExpectBOM),
+		))
 	}
 
 	if b[0] == UTF16BE {
-		return frame.NewTextFrame(
-			f.ID(),
-			util.DecodeUTF16(
-				b[1:],
-				unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM),
-			),
-		)
+		return frame.NewTextFrame(f.ID(), util.DecodeUTF16(
+			b[1:],
+			unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM),
+		))
 	}
 
 	if b[0] == UTF8 {

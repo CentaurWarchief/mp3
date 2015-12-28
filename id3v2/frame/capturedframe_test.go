@@ -8,7 +8,9 @@ import (
 )
 
 func TestCapturedFrameID(t *testing.T) {
-	frame := frame.CapturedFrame{Frame: "TIT2"}
+	frame := frame.CapturedFrame{
+		Frame: "TIT2",
+	}
 
 	assert.Equal(t, "TIT2", frame.ID())
 }
