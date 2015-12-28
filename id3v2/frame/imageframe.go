@@ -12,7 +12,7 @@ import (
 type ImageFrame struct {
 	Encoding    byte
 	MIMEType    string
-	Type        byte
+	Type        int
 	Description string
 	Binary      []byte
 }
