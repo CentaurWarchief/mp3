@@ -49,6 +49,7 @@ var (
 	}
 )
 
+// ParseFrame parses a MPEG audio frame header
 // http://www.codeproject.com/Articles/8295/MPEG-Audio-Frame-Header
 func ParseFrame(b []byte) *Frame {
 	frame := &Frame{}
@@ -57,6 +58,8 @@ func ParseFrame(b []byte) *Frame {
 	layer := layers[((b[1] & 0x06) >> 1)]
 
 	key := fmt.Sprintf("%s%s", version, layer)
+
+	frame.Samples = samples[version][layer]
 
 	if version == "2.5" {
 		key = fmt.Sprintf("2%s", layer)
@@ -73,7 +76,6 @@ func ParseFrame(b []byte) *Frame {
 	frame.Version = version
 	frame.Layer = layer
 	frame.Frequency = int((b[2] >> 2) & 0x3)
-	frame.Samples = samples[version][layer]
 	frame.Bitrate = bitrate
 	frame.SampleRate = rates[version][((b[2] & 0x0C) >> 2)]
 	frame.Mode = int((b[3] & 0x0C) >> 6)
