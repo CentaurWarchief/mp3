@@ -10,20 +10,20 @@ func round(f float64) int {
 	return int(math.Floor(f + .5))
 }
 
+// Duration reads all MPEG frames to guess its duration
 func Duration(r io.ReadSeeker) int {
 	var duration float64
 
 	r.Seek(0, os.SEEK_SET)
 	defer r.Seek(0, os.SEEK_SET)
 
-	block := make([]byte, 100)
+	block := make([]byte, 10)
 
-	r.Read(block)
+	if _, err := r.Read(block); err != nil {
+		return 0
+	}
 
 	if string(block[0:3]) == "ID3" {
-		flags := block[5]
-		footer := (flags & 0x10) != 0
-
 		z0 := block[6]
 		z1 := block[7]
 		z2 := block[8]
@@ -32,14 +32,15 @@ func Duration(r io.ReadSeeker) int {
 		size := 0
 
 		if (z0&0x80) == 0 && (z1&0x80) == 0 && (z2&0x80) == 0 && (z3&0x80) == 0 {
-			tag := (int((z0 & 0x7F)) * 2097152)
-			tag = tag + (int((z1 & 0x7F)) * 16384)
-			tag = tag + (int((z2 & 0x7F)) * 128)
-			tag = tag + (int(z3 & 0x7F))
+			tag := int(0)
+			tag |= int((z0 & 0x7F)) << 0x15
+			tag |= int((z1 & 0x7F)) << 0x0E
+			tag |= int((z2 & 0x7F)) << 0x07
+			tag |= int((z3 & 0x7F))
 
 			size = 10 + tag
 
-			if footer {
+			if (block[5] & 0x10) != 0 {
 				size = 10 + size
 			}
 		}

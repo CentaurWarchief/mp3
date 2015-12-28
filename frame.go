@@ -1,5 +1,6 @@
 package mp3
 
+// Frame represents a MPEG audio frame
 type Frame struct {
 	Version       string
 	Layer         string
@@ -15,6 +16,8 @@ type Frame struct {
 	Padding       int
 }
 
+// Size returns the frame size based on its layer, bitrate, sample rate
+// and padding
 func (f Frame) Size() int {
 	if f.Layer == "1" {
 		return ((12 * f.Bitrate * 1000 / f.SampleRate) + f.Padding) * 4
@@ -23,6 +26,7 @@ func (f Frame) Size() int {
 	return ((144 * f.Bitrate * 1000 / f.SampleRate) + f.Padding)
 }
 
+// ModeText returns the frame mode as string
 func (f Frame) ModeText() string {
 	switch f.Mode {
 	case 0:
